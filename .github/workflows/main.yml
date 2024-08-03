@@ -38,9 +38,9 @@ jobs:
           pip install arxiv
           pip install requests
           
-      - name: Run daily arxiv 
+      - name: Run daily_arxiv 
         run: |
-          python daily arxiv.py
+          python daily_arxiv.py
           
       - name: Push new cv-arxiv-daily.md
         uses: github-actions-x/commit@v2.8
