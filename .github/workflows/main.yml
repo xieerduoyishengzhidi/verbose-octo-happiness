@@ -42,12 +42,30 @@ jobs:
         run: |
           python daily_arxiv.py
           
-      - name: Push new cv-arxiv-daily.md
-        uses: github-actions-x/commit@v2.8
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "Github Action Automatic Update CV Arxiv Papers"
-          files: README.md cv-arxiv-daily.json
-          rebase: 'true'
-          name: ${{ env.GITHUB_USER_NAME }}
-          email: ${{ env.GITHUB_USER_EMAIL }}
+      - name: Push cv-arxiv-daily.md to GitHub Repository
+
+on:
+  push:  # Trigger the workflow on push events
+
+jobs:
+  push-file:
+    name: Push File
+    runs-on: ubuntu-latest  # Use the latest version of Ubuntu as the runner
+
+    steps:
+    - name: Checkout Source Code
+      uses: actions/checkout@v2  # Checkout the repository's code
+
+    - name: Push new cv-arxiv-daily.md
+      run: |
+        git config user.name '${{ env.GITHUB_USER_NAME }}'
+        git config user.email '${{ env.GITHUB_USER_EMAIL }}'
+        git add cv-arxiv-daily.md
+        git commit -m 'Add cv-arxiv-daily.md'
+        git push origin HEAD:main  # Push the changes to the main branch of the repository
+      env:
+        GITHUB_USER_NAME: ${{ github.actor }}  # Use the GitHub username of the actor triggering the workflow
+        GITHUB_USER_EMAIL: ${{ github.actor }}@users.noreply.github.com  # Use a noreply email associated with the actor
+
+
+     
